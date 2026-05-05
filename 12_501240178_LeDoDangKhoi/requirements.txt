@@ -1,0 +1,7 @@
+Django>=5.0
+gunicorn
+whitenoise
+django-environ
+psycopg2-binary
+pillow
+django-cors-headersclear 
