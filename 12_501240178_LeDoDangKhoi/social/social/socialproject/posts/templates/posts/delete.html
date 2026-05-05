@@ -1,0 +1,9 @@
+{% extends 'users/base.html' %}
+{% block body %}
+<h3>Are you sure?</h3>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger">Delete</button>
+  <a href="{% url 'users:index' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

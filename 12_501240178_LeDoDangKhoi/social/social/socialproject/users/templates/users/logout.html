@@ -1,0 +1,7 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block body %}
+    <h1>You have logged out.</h1>
+    <a href="{% url 'users:login' %}" class="btn btn-primary">Login?</a>
+{% endblock %}

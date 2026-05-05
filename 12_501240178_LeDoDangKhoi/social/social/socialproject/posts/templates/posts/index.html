@@ -1,0 +1,511 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JAUMO - Kết nối & Hẹn hò</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .header {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-size: 32px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .header-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+      
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+      }
+      
+      .create-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+      }
+      
+      .create-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      }
+      
+      .logout-btn {
+        background: #f44336;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-block;
+      }
+      
+      .login-btn {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+      }
+      
+      .posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+      }
+      
+      .post-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      
+      .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+      
+      .post-image {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+      }
+      
+      .post-image-placeholder {
+        width: 100%;
+        height: 280px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 48px;
+      }
+      
+      .post-content {
+        padding: 20px;
+      }
+      
+      .post-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      
+      .post-user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 12px;
+        font-size: 18px;
+      }
+      
+      .post-user-info h3 {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 3px;
+      }
+      
+      .post-time {
+        font-size: 13px;
+        color: #999;
+      }
+      
+      .post-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      
+      .post-caption {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+      
+      .post-stats {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      
+      .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        color: #666;
+      }
+      
+      .post-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      
+      .action-btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        text-decoration: none;
+      }
+      
+      .like-btn {
+        background: #ffe0e0;
+        color: #ff4458;
+      }
+      
+      .like-btn:hover {
+        background: #ffccd2;
+      }
+      
+      .like-btn.liked {
+        background: #ff4458;
+        color: white;
+      }
+      
+      .comment-btn {
+        background: #e3f2fd;
+        color: #2196f3;
+      }
+      
+      .comment-btn:hover {
+        background: #bbdefb;
+      }
+      
+      .edit-btn {
+        background: #f3e5f5;
+        color: #9c27b0;
+      }
+      
+      .edit-btn:hover {
+        background: #e1bee7;
+      }
+      
+      .delete-btn {
+        background: #ffebee;
+        color: #f44336;
+      }
+      
+      .delete-btn:hover {
+        background: #ffcdd2;
+      }
+      
+      .detail-btn {
+        background: #fff3e0;
+        color: #ff9800;
+      }
+      
+      .detail-btn:hover {
+        background: #ffe0b2;
+      }
+      
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .empty-state-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+      }
+      
+      .empty-state h2 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+      
+      .empty-state p {
+        color: #999;
+        margin-bottom: 25px;
+      }
+      
+      .messages {
+        max-width: 1200px;
+        margin: 0 auto 20px;
+      }
+      
+      .alert {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-weight: 500;
+      }
+      
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      
+      .alert-error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      
+      .alert-info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+      
+      .owner-badge {
+        display: inline-block;
+        background: #4caf50;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+        margin-left: 5px;
+      }
+      
+      .disabled-btn {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          gap: 15px;
+        }
+      
+        .header-actions {
+          width: 100%;
+          justify-content: center;
+        }
+      
+        .posts-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">💜 JAUMO</div>
+        <div class="header-actions">
+          {% if user.is_authenticated %}
+            <!-- Hiển thị thông tin user nếu đã đăng nhập -->
+            <div class="user-info">
+              <div class="user-avatar">{{ user.username|first|upper }}</div>
+              <span>{{ user.username }}</span>
+            </div>
+            <a href="{% url 'posts:create' %}" class="create-btn">+ Tạo bài viết</a>
+          {% else %}
+            <!-- Hiển thị nút đăng nhập nếu chưa đăng nhập -->
+            <a href="{urls 'posts: login'}" class="login-btn">Đăng nhập</a>
+            <a href="{urls 'posts: login'}" class="login-btn">Đăng xuât</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Messages -->
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Posts Grid hoặc Empty State -->
+      {% if posts %}
+        <!-- Có bài viết - hiển thị grid -->
+        <div class="posts-grid">
+          {% for post in posts %}
+            <div class="post-card">
+              {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image" />
+              {% else %}
+                <div class="post-image-placeholder">📷</div>
+              {% endif %}
+
+              <div class="post-content">
+                <div class="post-header">
+                  <div class="post-user-avatar">{{ post.user.username|first|upper }}</div>
+                  <div class="post-user-info">
+                    <h3>
+                      {{ post.user.username }}
+                      <!-- Badge nếu là chủ bài viết -->
+                      {% if user == post.user %}
+                        <span class="owner-badge">Của bạn</span>
+                      {% endif %}
+                    </h3>
+                    <div class="post-time">{{ post.create_at|timesince }} trước</div>
+                  </div>
+                </div>
+
+                <div class="post-title">{{ post.title }}</div>
+
+                <!-- Kiểm tra độ dài caption -->
+                {% if post.caption|length > 100 %}
+                  <div class="post-caption">{{ post.caption|slice:':100' }}...</div>
+                {% else %}
+                  <div class="post-caption">{{ post.caption }}</div>
+                {% endif %}
+
+                <!-- Post Statistics -->
+                <div class="post-stats">
+                  <div class="stat-item">
+                    {% if post.likes.count > 0 %}
+                      ❤️ {{ post.likes.count }}
+                    {% else %}
+                      🤍 0
+                    {% endif %}
+                  </div>
+                  <div class="stat-item">
+                    {% if post.comments.count > 0 %}
+                      💬 {{ post.comments.count }}
+                    {% else %}
+                      💬 0
+                    {% endif %}
+                  </div>
+                  <div class="stat-item">👁️ {{ post.views|default:0 }}</div>
+                  
+                </div>
+
+                <div class="post-actions">
+                  <!-- Nút Like - chỉ hiển thị nếu đã đăng nhập -->
+                  {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'posts:like' post.pk %}" style="flex: 1;">
+                      {% csrf_token %}
+                      <!-- Kiểm tra user đã like chưa -->
+                      {% if user in post.likes.all %}
+                        <button type="submit" class="action-btn like-btn liked">❤️ {{ post.likes.count }}</button>
+                      {% else %}
+                        <button type="submit" class="action-btn like-btn">🤍 {{ post.likes.count }}</button>
+                      {% endif %}
+                    </form>
+                  {% else %}
+                    <a href="#" class="action-btn like-btn disabled-btn">🤍 {{ post.likes.count }}</a>
+                  {% endif %}
+
+                  <!-- Nút Comment -->
+                  <a href="{% url 'posts:detail' post.pk %}" class="action-btn comment-btn">💬 {{ post.comments.count|default:0 }}</a>
+
+                  <!-- Nút Xem chi tiết -->
+                  <a href="{% url 'posts:detail' post.pk %}" class="action-btn detail-btn">👁️</a>
+
+                  <!-- Nút Sửa - chỉ hiển thị nếu là chủ bài viết -->
+                  {% if user == post.user %}
+                    <a href="{% url 'posts:edit' post.pk %}" class="action-btn edit-btn">✏️</a>
+                  {% endif %}
+
+                  <!-- Nút Xóa - chỉ hiển thị nếu là chủ bài viết hoặc admin -->
+                  {% if user == post.user or user.is_staff %}
+                    <a href="{% url 'posts:delete' post.pk %}" class="action-btn delete-btn">🗑️</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <!-- Không có bài viết - hiển thị empty state -->
+        <div class="empty-state">
+          <div class="empty-state-icon">📝</div>
+          <h2>Chưa có bài viết nào</h2>
+          {% if user.is_authenticated %}
+            <p>Hãy tạo bài viết đầu tiên của bạn!</p>
+            <a href="{% url 'posts:create' %}" class="create-btn">Tạo bài viết ngay</a>
+          {% else %}
+            <p>Đăng nhập để tạo bài viết!</p>
+            <a href="{% url 'login' %}" class="login-btn">Đăng nhập ngay</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
